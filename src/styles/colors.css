@@ -1,0 +1,43 @@
+/* WINTER ARC — DESIGN TOKENS (STRICT) */
+:root {
+  /* Surface & Base */
+  --bg-deep: #0A0C10;              /* Deep frozen black-blue */
+  --surface-card: #12151C;         /* Cold carbon surface */
+  --surface-elevated: #161A23;     /* Elevated panel */
+  --border-subtle: #1E232E;        /* Cold iron border */
+  --border-active: #2C3445;        /* Active element border */
+
+  /* Typography Colors */
+  --text-primary: #F2F4F8;         /* Ice white */
+  --text-secondary: #8A93A6;       /* Cold steel gray */
+  --text-muted: #535C6E;           /* Muted shadow steel */
+
+  /* THE FIRE — Accent (Max 5% of screen, only for what matters) */
+  --color-ember: #FF5C1A;          /* Ember orange: streak flame, current day, primary CTA */
+  --glow-ember: rgba(255, 92, 26, 0.12); /* Subtle glow behind streak & CTA */
+  --glow-ember-intense: rgba(255, 92, 26, 0.28);
+  --glow-ember-border: rgba(255, 92, 26, 0.45);
+
+  /* ICE BLUE — ONLY for: rest timer, upcoming days, past completions, weight sparkline */
+  --color-ice: #7DD3FC;            /* Fire = present effort, Ice = past/rest */
+  --glow-ice: rgba(125, 211, 252, 0.15);
+
+  /* DANGER RED — ONLY on the streak-reset screen & missed days */
+  --color-danger: #EF4444;         /* Reset screen hero / warnings */
+  --color-missed: #7F1D1D;         /* Missed day calendar dot */
+  --glow-danger: rgba(239, 68, 68, 0.2);
+
+  /* SUCCESS GREEN — ONLY on workout-complete moment */
+  --color-success: #4ADE80;        /* 200ms victory moment */
+  --glow-success: rgba(74, 222, 128, 0.25);
+
+  /* Typography Families */
+  --font-hero: 'Archivo Black', 'Anton', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Layout & Insets */
+  --max-width: 480px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;               /* Max border radius 12px per guidelines */
+}
