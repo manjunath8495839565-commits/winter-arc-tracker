@@ -56,7 +56,20 @@ export function SettingsScreen({
   return (
     <div className="page-transition" style={{ padding: '24px 20px', width: '100%' }}>
       {/* Title */}
-      <div style={{ marginBottom: '24px', textAlign: 'center' }}>
+      <div style={{ marginBottom: '24px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <img
+          src="./logo.png"
+          alt="Gym Tracker Emblem"
+          style={{
+            width: '64px',
+            height: '64px',
+            borderRadius: '50%',
+            objectFit: 'cover',
+            border: '2px solid var(--border-active)',
+            boxShadow: '0 0 20px rgba(125, 211, 252, 0.25)',
+            marginBottom: '12px'
+          }}
+        />
         <h1
           className="font-hero"
           style={{

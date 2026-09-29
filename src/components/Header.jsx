@@ -15,7 +15,19 @@ export function Header({ arcDay, onOpenSettings, onInstallClick, canInstall }) {
       top: 0,
       zIndex: 100
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <img
+          src="./logo.png"
+          alt="Gym Tracker Logo"
+          style={{
+            width: '26px',
+            height: '26px',
+            borderRadius: '50%',
+            objectFit: 'cover',
+            border: '1px solid var(--border-subtle)',
+            boxShadow: '0 0 10px rgba(125, 211, 252, 0.2)'
+          }}
+        />
         <span className="spec-label" style={{ color: 'var(--text-secondary)' }}>
           WINTER ARC — DAY {String(arcDay).padStart(2, '0')}/90
         </span>
