@@ -103,7 +103,8 @@ export function Screen5Archive({
         justifyContent: 'space-between',
         padding: '16px 20px',
         borderBottom: '1px solid var(--border-subtle)',
-        backgroundColor: 'rgba(10, 12, 16, 0.95)',
+        backgroundColor: 'var(--surface-card)',
+        boxShadow: '0 1px 0 var(--border-subtle)',
         zIndex: 50
       }}>
         <button
@@ -134,7 +135,7 @@ export function Screen5Archive({
       <div style={{
         display: 'flex',
         borderBottom: '1px solid var(--border-subtle)',
-        backgroundColor: '#12151C',
+        backgroundColor: 'var(--surface-card)',
         padding: '0 8px'
       }}>
         {[
@@ -198,14 +199,14 @@ export function Screen5Archive({
 
                   if (status === 'completed') {
                     bg = 'var(--color-ember)';
-                    color = '#0A0C10';
-                    boxShadow = '0 0 8px rgba(255, 92, 26, 0.4)';
+                    color = '#FFFFFF';
+                    boxShadow = '0 2px 8px rgba(255,77,0,0.30)';
                   } else if (status === 'missed') {
                     bg = 'var(--color-missed)';
-                    color = '#FCA5A5';
+                    color = 'var(--color-danger)';
                   } else if (status === 'today') {
-                    bg = '#161A23';
-                    color = 'var(--color-ember)';
+                    bg = 'var(--color-ember-badge)';
+                    color = 'var(--color-ember-deep)';
                     border = '1.5px solid var(--color-ember)';
                   }
 
@@ -355,32 +356,33 @@ export function Screen5Archive({
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 12px', backgroundColor: 'rgba(30,35,46,0.4)', borderRadius: 'var(--radius-sm)' }}>
+                {/* VOLT highlight for PRs — rare, max contrast on white */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 12px', backgroundColor: 'var(--surface-inset)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)' }}>
                   <div>
                     <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>MAX PUSH-UPS</div>
                     <div style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>{bestRecords.pushups?.date}</div>
                   </div>
-                  <div className="font-hero tabular-nums" style={{ fontSize: '20px', color: 'var(--color-ember)' }}>
+                  <div className="font-hero tabular-nums" style={{ fontSize: '20px', color: 'var(--color-volt)', background: 'var(--color-volt-tint)', padding: '0 8px', borderRadius: '4px' }}>
                     {bestRecords.pushups?.value} REPS
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 12px', backgroundColor: 'rgba(30,35,46,0.4)', borderRadius: 'var(--radius-sm)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 12px', backgroundColor: 'var(--surface-inset)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)' }}>
                   <div>
                     <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>MAX PLANK</div>
                     <div style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>{bestRecords.plank?.date}</div>
                   </div>
-                  <div className="font-hero tabular-nums" style={{ fontSize: '20px', color: 'var(--color-ice)' }}>
+                  <div className="font-hero tabular-nums" style={{ fontSize: '20px', color: 'var(--color-volt)', background: 'var(--color-volt-tint)', padding: '0 8px', borderRadius: '4px' }}>
                     {bestRecords.plank?.value} SEC
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 12px', backgroundColor: 'rgba(30,35,46,0.4)', borderRadius: 'var(--radius-sm)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 12px', backgroundColor: 'var(--surface-inset)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)' }}>
                   <div>
                     <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>FASTEST 5K</div>
                     <div style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>{bestRecords.run5k?.date}</div>
                   </div>
-                  <div className="font-hero tabular-nums" style={{ fontSize: '20px', color: 'var(--text-primary)' }}>
+                  <div className="font-hero tabular-nums" style={{ fontSize: '20px', color: 'var(--color-volt)', background: 'var(--color-volt-tint)', padding: '0 8px', borderRadius: '4px' }}>
                     {bestRecords.run5k?.value}
                   </div>
                 </div>
@@ -421,10 +423,10 @@ export function Screen5Archive({
                           onClick={() => setSelectedDayPreview(d)}
                           style={{
                             padding: '6px 0',
-                            backgroundColor: isCompleted ? 'rgba(255, 92, 26, 0.2)' : 'rgba(30, 35, 46, 0.4)',
+                            backgroundColor: isCompleted ? 'var(--color-ember-badge)' : 'var(--surface-inset)',
                             border: `1px solid ${isCompleted ? 'var(--color-ember)' : 'var(--border-subtle)'}`,
                             borderRadius: 'var(--radius-sm)',
-                            color: isCompleted ? 'var(--color-ember)' : 'var(--text-secondary)',
+                            color: isCompleted ? 'var(--color-ember-deep)' : 'var(--text-secondary)',
                             fontFamily: 'var(--font-hero)',
                             fontSize: '10px',
                             cursor: 'pointer'
@@ -459,9 +461,9 @@ export function Screen5Archive({
                   <button
                     onClick={onInstallClick}
                     className="btn-primary-ember"
-                    style={{ width: 'auto', padding: '8px 14px', fontSize: '11px', backgroundColor: 'var(--color-ice)', color: '#0A0C10', boxShadow: 'none' }}
+                    style={{ width: 'auto', padding: '8px 14px', fontSize: '11px', background: 'var(--color-ice)', boxShadow: '0 4px 14px rgba(0,144,184,0.25)' }}
                   >
-                    <InstallIcon size={14} color="#0A0C10" /> INSTALL
+                    <InstallIcon size={14} color="#FFFFFF" /> INSTALL
                   </button>
                 </div>
               </div>
@@ -477,13 +479,14 @@ export function Screen5Archive({
                     onClick={() => onUpdateSettings({ ...settings, restTimerDuration: s })}
                     style={{
                       padding: '8px 0',
-                      backgroundColor: settings.restTimerDuration === s ? 'var(--color-ice)' : '#0A0C10',
-                      color: settings.restTimerDuration === s ? '#0A0C10' : 'var(--text-primary)',
-                      border: '1px solid var(--border-subtle)',
+                      backgroundColor: settings.restTimerDuration === s ? 'var(--color-ice-tint)' : 'var(--surface-inset)',
+                      color: settings.restTimerDuration === s ? 'var(--color-ice)' : 'var(--text-secondary)',
+                      border: `1px solid ${settings.restTimerDuration === s ? 'var(--color-ice)' : 'var(--border-subtle)'}`,
                       borderRadius: 'var(--radius-sm)',
                       fontFamily: 'var(--font-hero)',
                       fontSize: '12px',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      fontWeight: settings.restTimerDuration === s ? 700 : 400
                     }}
                   >
                     {s}s
@@ -622,8 +625,8 @@ export function Screen5Archive({
         <div style={{
           position: 'fixed',
           inset: 0,
-          backgroundColor: 'rgba(0,0,0,0.88)',
-          backdropFilter: 'blur(8px)',
+          backgroundColor: 'rgba(11, 18, 32, 0.40)',
+          backdropFilter: 'blur(14px)',
           zIndex: 900,
           display: 'flex',
           alignItems: 'center',
@@ -672,7 +675,7 @@ export function Screen5Archive({
 
       {/* Body Modal */}
       {showBodyModal && (
-        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.88)', zIndex: 900, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(11,18,32,0.40)', backdropFilter: 'blur(14px)', zIndex: 900, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <form onSubmit={submitBodyMetric} className="cold-card" style={{ maxWidth: '360px', width: '100%', padding: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
               <span className="spec-label" style={{ color: 'var(--color-ice)' }}>SUNDAY CHECK-IN</span>
@@ -680,11 +683,11 @@ export function Screen5Archive({
             </div>
             <div style={{ marginBottom: '12px' }}>
               <label className="spec-label" style={{ display: 'block', marginBottom: '4px' }}>WEIGHT (KG) *</label>
-              <input type="number" step="0.1" required value={inputWeight} onChange={(e) => setInputWeight(e.target.value)} placeholder="e.g. 78.2" style={{ width: '100%', padding: '10px', backgroundColor: '#0A0C10', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', color: 'var(--text-primary)', fontSize: '14px' }} />
+              <input type="number" step="0.1" required value={inputWeight} onChange={(e) => setInputWeight(e.target.value)} placeholder="e.g. 78.2" style={{ width: '100%', padding: '10px', backgroundColor: 'var(--surface-inset)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', color: 'var(--text-primary)', fontSize: '14px' }} />
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label className="spec-label" style={{ display: 'block', marginBottom: '4px' }}>WAIST (CM) (OPTIONAL)</label>
-              <input type="number" step="0.5" value={inputWaist} onChange={(e) => setInputWaist(e.target.value)} placeholder="e.g. 84" style={{ width: '100%', padding: '10px', backgroundColor: '#0A0C10', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', color: 'var(--text-primary)', fontSize: '14px' }} />
+              <input type="number" step="0.5" value={inputWaist} onChange={(e) => setInputWaist(e.target.value)} placeholder="e.g. 84" style={{ width: '100%', padding: '10px', backgroundColor: 'var(--surface-inset)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', color: 'var(--text-primary)', fontSize: '14px' }} />
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
               <button type="submit" className="btn-primary-ember" style={{ flex: 1, padding: '10px', fontSize: '12px' }}>SAVE</button>
@@ -696,21 +699,21 @@ export function Screen5Archive({
 
       {/* Record Modal */}
       {showRecordModal && (
-        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.88)', zIndex: 900, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(11,18,32,0.40)', backdropFilter: 'blur(14px)', zIndex: 900, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <form onSubmit={submitRecord} className="cold-card" style={{ maxWidth: '360px', width: '100%', padding: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-              <span className="spec-label" style={{ color: 'var(--color-ember)' }}>RECORD PR</span>
+              <span className="spec-label" style={{ color: 'var(--color-volt)' }}>RECORD PR</span>
               <button type="button" onClick={() => setShowRecordModal(false)} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}><CloseIcon size={18} /></button>
             </div>
             <div style={{ marginBottom: '12px' }}>
-              <select value={recordKey} onChange={(e) => setRecordKey(e.target.value)} style={{ width: '100%', padding: '10px', backgroundColor: '#0A0C10', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', color: 'var(--text-primary)', fontSize: '13px' }}>
+              <select value={recordKey} onChange={(e) => setRecordKey(e.target.value)} style={{ width: '100%', padding: '10px', backgroundColor: 'var(--surface-inset)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', color: 'var(--text-primary)', fontSize: '13px' }}>
                 <option value="pushups">Max Push-ups (Reps)</option>
                 <option value="plank">Longest Plank (Seconds)</option>
                 <option value="run5k">Fastest 5K (MM:SS)</option>
               </select>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <input type="text" required value={recordVal} onChange={(e) => setRecordVal(e.target.value)} placeholder="e.g. 52 or 21:30" style={{ width: '100%', padding: '10px', backgroundColor: '#0A0C10', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', color: 'var(--text-primary)', fontSize: '14px' }} />
+              <input type="text" required value={recordVal} onChange={(e) => setRecordVal(e.target.value)} placeholder="e.g. 52 or 21:30" style={{ width: '100%', padding: '10px', backgroundColor: 'var(--surface-inset)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', color: 'var(--text-primary)', fontSize: '14px' }} />
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
               <button type="submit" className="btn-primary-ember" style={{ flex: 1, padding: '10px', fontSize: '12px' }}>SAVE PR</button>

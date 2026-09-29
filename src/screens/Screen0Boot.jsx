@@ -6,36 +6,20 @@ export function Screen0Boot({ onComplete, isWorkoutDoneToday, soundEnabled = tru
   const [shaking, setShaking] = useState(false);
 
   useEffect(() => {
-    // Check if opened between 5:30 AM and 7:00 AM and workout not done
     const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const timeInMins = hours * 60 + minutes;
-    const isWakeUpWindow = timeInMins >= 330 && timeInMins <= 420; // 5:30 to 7:00 AM
+    const timeInMins = now.getHours() * 60 + now.getMinutes();
+    const isWakeUpWindow = timeInMins >= 330 && timeInMins <= 420; // 5:30–7:00 AM
 
     if (isWakeUpWindow && !isWorkoutDoneToday) {
       setShaking(true);
-      if (soundEnabled) {
-        playWorkoutLoggedSound();
-      }
+      if (soundEnabled) playWorkoutLoggedSound();
     }
 
-    // Auto-split open after 800ms, complete by 1100ms (max 1.2s per spec)
-    const splitTimer = setTimeout(() => {
-      setSplitting(true);
-    }, 700);
-
-    const endTimer = setTimeout(() => {
-      onComplete();
-    }, 1100);
-
-    return () => {
-      clearTimeout(splitTimer);
-      clearTimeout(endTimer);
-    };
+    const splitTimer = setTimeout(() => setSplitting(true), 700);
+    const endTimer   = setTimeout(() => onComplete(), 1100);
+    return () => { clearTimeout(splitTimer); clearTimeout(endTimer); };
   }, [isWorkoutDoneToday, soundEnabled, onComplete]);
 
-  // Tap anywhere to skip instantly
   const handleTapSkip = () => {
     setSplitting(true);
     setTimeout(onComplete, 80);
@@ -48,7 +32,8 @@ export function Screen0Boot({ onComplete, isWorkoutDoneToday, soundEnabled = tru
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: '#000000',
+        /* Boot stays coal-black — cinematic cold-open contrast before light floods in */
+        backgroundColor: '#06080D',
         zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
@@ -57,40 +42,44 @@ export function Screen0Boot({ onComplete, isWorkoutDoneToday, soundEnabled = tru
         cursor: 'pointer'
       }}
     >
-      {/* Left Shutter Door */}
+      {/* Left Shutter */}
       <div style={{
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        width: '50%',
-        backgroundColor: '#000000',
-        borderRight: '1px solid var(--border-subtle)',
+        position: 'absolute', top: 0, bottom: 0, left: 0, width: '50%',
+        backgroundColor: '#06080D',
+        borderRight: '1px solid rgba(255,77,0,0.18)',
         transform: splitting ? 'translateX(-100%)' : 'translateX(0)',
-        transition: 'transform 300ms cubic-bezier(0.16, 1, 0.3, 1)',
+        transition: 'transform 320ms cubic-bezier(0.16, 1, 0.3, 1)',
         zIndex: 1
       }} />
 
-      {/* Right Shutter Door */}
+      {/* Right Shutter */}
+      <div style={{
+        position: 'absolute', top: 0, bottom: 0, right: 0, width: '50%',
+        backgroundColor: '#06080D',
+        borderLeft: '1px solid rgba(255,77,0,0.18)',
+        transform: splitting ? 'translateX(100%)' : 'translateX(0)',
+        transition: 'transform 320ms cubic-bezier(0.16, 1, 0.3, 1)',
+        zIndex: 1
+      }} />
+
+      {/* Amber ambient halo behind logo */}
       <div style={{
         position: 'absolute',
-        top: 0,
-        bottom: 0,
-        right: 0,
-        width: '50%',
-        backgroundColor: '#000000',
-        borderLeft: '1px solid var(--border-subtle)',
-        transform: splitting ? 'translateX(100%)' : 'translateX(0)',
-        transition: 'transform 300ms cubic-bezier(0.16, 1, 0.3, 1)',
-        zIndex: 1
+        width: '180px',
+        height: '180px',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(255,77,0,0.22) 0%, rgba(255,77,0,0) 70%)',
+        animation: 'glowPulse 3s ease-in-out infinite',
+        pointerEvents: 'none',
+        zIndex: 2
       }} />
 
-      {/* Center Logo with Ember Pulse */}
+      {/* Logo with ember ring */}
       <div style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        zIndex: 2,
+        zIndex: 3,
         opacity: splitting ? 0 : 1,
         transition: 'opacity 200ms ease-out'
       }}>
@@ -98,25 +87,25 @@ export function Screen0Boot({ onComplete, isWorkoutDoneToday, soundEnabled = tru
           width: '96px',
           height: '96px',
           borderRadius: '50%',
-          padding: '2px',
-          backgroundColor: 'rgba(255, 92, 26, 0.1)',
-          boxShadow: '0 0 32px var(--glow-ember-intense), 0 0 60px var(--glow-ember)',
-          animation: 'flameFlicker 1.2s ease-in-out infinite'
+          border: '2px solid rgba(255,77,0,0.55)',
+          boxShadow: '0 0 28px rgba(255,77,0,0.45), 0 0 6px rgba(255,77,0,0.6) inset',
+          animation: 'flameFlicker 1.4s ease-in-out infinite',
+          overflow: 'hidden'
         }}>
           <img
             src="./logo.png"
-            alt="Gym Tracker Emblem"
-            style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
+            alt="Winter Arc"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         </div>
 
         <div
           className="spec-label"
           style={{
-            marginTop: '20px',
-            fontSize: '11px',
-            letterSpacing: '0.3em',
-            color: 'var(--text-secondary)'
+            marginTop: '22px',
+            fontSize: '10px',
+            letterSpacing: '0.34em',
+            color: 'rgba(255,255,255,0.45)'
           }}
         >
           WINTER ARC // BOOT

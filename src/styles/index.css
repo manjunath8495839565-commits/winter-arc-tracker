@@ -17,23 +17,23 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
   min-height: 100dvh;
-  overflow: hidden; /* Mission sequence: no window scrolling on core flow */
+  overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
 }
 
-/* Subtle iron grain overlay */
+/* Subtle crystalline frost texture on light bg */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.025;
+  opacity: 0.018;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   z-index: 9999;
 }
 
-/* App Container constrained to mobile-first max width */
+/* App Container */
 #root {
   min-height: 100vh;
   min-height: 100dvh;
@@ -53,11 +53,12 @@ body::before {
   flex-direction: column;
   position: relative;
   background-color: var(--bg-deep);
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.85);
+  /* Soft ambient shadow (not dark-mode glow) */
+  box-shadow: 0 0 60px rgba(11, 18, 32, 0.08);
   overflow: hidden;
 }
 
-/* Scrollable container specifically for ARCHIVE view */
+/* Scrollable container for ARCHIVE view */
 .archive-scrollable {
   flex: 1;
   overflow-y: auto;
@@ -65,7 +66,7 @@ body::before {
   padding-bottom: calc(40px + env(safe-area-inset-bottom, 16px));
 }
 
-/* Typography Utility Classes */
+/* ─── Typography Utilities ───────────────────────────────── */
 .font-hero {
   font-family: var(--font-hero);
   letter-spacing: -0.02em;
@@ -84,25 +85,31 @@ body::before {
   color: var(--text-secondary);
 }
 
-/* Card Component */
+/* ─── Card Component ─────────────────────────────────────── */
 .cold-card {
   background-color: var(--surface-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: 16px;
   position: relative;
+  box-shadow: var(--shadow-card);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Tactical CTA Buttons */
+.cold-card:hover {
+  border-color: var(--border-active);
+}
+
+/* ─── PRIMARY CTA: LOCK IN Button ────────────────────────── */
+/* Ember gradient, white hero text, warm shadow — NOT a glow stack */
 .btn-primary-ember {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   width: 100%;
-  background-color: var(--color-ember);
-  color: #0A0C10;
+  background: var(--gradient-ember);
+  color: #FFFFFF;
   font-family: var(--font-hero);
   font-size: 16px;
   letter-spacing: 0.04em;
@@ -111,22 +118,28 @@ body::before {
   border: none;
   border-radius: var(--radius-md);
   cursor: pointer;
-  box-shadow: 0 4px 24px var(--glow-ember-intense), 0 0 40px var(--glow-ember);
-  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+  box-shadow: var(--shadow-ember);
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, filter 0.15s ease;
   position: relative;
   overflow: hidden;
 }
 
-.btn-primary-ember:active {
-  transform: scale(0.97);
+.btn-primary-ember:hover {
+  filter: brightness(1.06);
 }
 
+.btn-primary-ember:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 18px rgba(255, 77, 0, 0.28);
+}
+
+/* ─── SECONDARY Button ───────────────────────────────────── */
 .btn-secondary {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background-color: transparent;
+  background-color: var(--surface-card);
   color: var(--text-primary);
   font-family: var(--font-hero);
   font-size: 13px;
@@ -136,6 +149,7 @@ body::before {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   cursor: pointer;
+  box-shadow: var(--shadow-card);
   transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
 }
 
@@ -145,33 +159,38 @@ body::before {
 
 .btn-secondary:hover {
   border-color: var(--border-active);
-  background-color: var(--surface-card);
+  background-color: var(--surface-elevated);
 }
 
+/* ─── DANGER Outline Button ──────────────────────────────── */
 .btn-danger-outline {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   background: transparent;
-  color: var(--text-primary);
+  color: var(--color-danger);
   font-family: var(--font-hero);
   font-size: 15px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 18px 24px;
-  border: 1px solid var(--color-danger);
+  border: 1.5px solid var(--color-danger);
   border-radius: var(--radius-md);
   cursor: pointer;
-  box-shadow: 0 0 20px var(--glow-danger);
   transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.btn-danger-outline:hover {
+  background-color: rgba(224, 36, 68, 0.06);
 }
 
 .btn-danger-outline:active {
   transform: scale(0.97);
-  background-color: rgba(239, 68, 68, 0.1);
+  background-color: rgba(224, 36, 68, 0.10);
 }
 
+/* ─── GHOST Weak Button ──────────────────────────────────── */
 .btn-ghost-weak {
   background: none;
   border: none;
@@ -190,132 +209,109 @@ body::before {
   color: var(--color-danger);
 }
 
-/* =========================================================
-   MISSION-SEQUENCE MOTION ARCHITECTURE
-   ========================================================= */
+/* ─── MISSION-SEQUENCE ANIMATIONS ──────────────────────── */
 
-/* 5:30 - 7:00 AM Screen Wake-Up Shake (4px once) */
+/* 5:30–7:00 AM wake-up shake */
 @keyframes wakeUpHit {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  50% { transform: translateX(4px); }
-  75% { transform: translateX(-2px); }
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-4px); }
+  50%  { transform: translateX(4px); }
+  75%  { transform: translateX(-2px); }
   100% { transform: translateX(0); }
 }
-
 .animate-wake-shake {
   animation: wakeUpHit 220ms ease-out 1;
 }
 
-/* VIGIL -> BRIEFING: Slides up like a briefing sheet */
+/* Slide up for briefing entrance */
 @keyframes slideUpBriefing {
-  from {
-    transform: translateY(100%);
-    opacity: 0.8;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(100%); opacity: 0.8; }
+  to   { transform: translateY(0);    opacity: 1;   }
 }
-
 .animate-slide-up {
   animation: slideUpBriefing 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* BRIEFING -> BATTLE: Hard cut (150ms fade) like entering the gym */
+/* Hard cut fade-in for BATTLE */
 @keyframes hardCutFadeIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
-
 .animate-hard-cut {
   animation: hardCutFadeIn 150ms ease-out forwards;
 }
 
-/* Tap Ripple (100ms ember pulse ripple from tap) */
+/* Tap ripple — ember pulse from tap point */
 @keyframes tapRippleEmber {
-  0% {
-    transform: scale(0.85);
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(1.6);
-    opacity: 0;
-  }
+  0%   { transform: scale(0.85); opacity: 0.7; }
+  100% { transform: scale(1.6);  opacity: 0;   }
 }
-
 .animate-tap-ripple {
   position: absolute;
   width: 140px;
   height: 140px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 92, 26, 0.5) 0%, rgba(255, 92, 26, 0) 70%);
+  background: radial-gradient(circle, rgba(255, 77, 0, 0.35) 0%, rgba(255, 77, 0, 0) 70%);
   pointer-events: none;
   animation: tapRippleEmber 250ms ease-out forwards;
 }
 
-/* Rest timer ring flashing ice -> ember for last 3s */
+/* Rest timer final 3s: cyan → magenta warning flash */
 @keyframes restWarningFlash {
-  0%, 100% {
-    stroke: var(--color-ice);
-    filter: drop-shadow(0 0 6px var(--glow-ice));
-  }
-  50% {
-    stroke: var(--color-ember);
-    filter: drop-shadow(0 0 14px var(--color-ember));
-  }
+  0%, 100% { stroke: var(--color-magenta); }
+  50%       { stroke: var(--color-magenta); opacity: 0.6; }
 }
-
 .animate-rest-warning {
-  animation: restWarningFlash 0.5s ease-in-out infinite;
+  animation: restWarningFlash 0.45s ease-in-out infinite;
 }
 
-/* Flame animation */
+/* Flame flicker */
 @keyframes flameFlicker {
   0%, 100% {
     transform: scale(1);
-    opacity: 0.95;
-    filter: drop-shadow(0 0 16px rgba(255, 92, 26, 0.35));
+    opacity: 0.92;
+    filter: drop-shadow(0 0 10px rgba(255, 77, 0, 0.45));
   }
   50% {
-    transform: scale(1.03) translateY(-1px);
+    transform: scale(1.04) translateY(-1.5px);
     opacity: 1;
-    filter: drop-shadow(0 0 24px rgba(255, 92, 26, 0.55));
+    filter: drop-shadow(0 0 20px rgba(255, 77, 0, 0.65));
   }
 }
-
 .animate-flame {
   animation: flameFlicker 2.8s ease-in-out infinite;
   transform-origin: center bottom;
 }
 
-/* Victory Vignette Flash */
+/* Victory flash — green wash on DEBRIEF */
 @keyframes victoryFlash {
-  0% {
-    box-shadow: inset 0 0 140px rgba(74, 222, 128, 0.7);
-  }
-  100% {
-    box-shadow: inset 0 0 0 rgba(74, 222, 128, 0);
-  }
+  0%   { box-shadow: inset 0 0 120px rgba(18, 183, 106, 0.55); }
+  100% { box-shadow: inset 0 0 0 rgba(18, 183, 106, 0); }
 }
-
 .vignette-flash {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  animation: victoryFlash 300ms ease-out forwards;
+  animation: victoryFlash 350ms ease-out forwards;
   z-index: 10000;
 }
 
-/* Custom Scrollbars for Archive view */
-::-webkit-scrollbar {
-  width: 4px;
+/* Fast fade in */
+@keyframes fadeInFast {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-::-webkit-scrollbar-track {
-  background: var(--bg-deep);
+
+/* Ember tint glow pulse (streak ring halo on light) */
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%       { opacity: 0.60; transform: scale(1.06); }
 }
-::-webkit-scrollbar-thumb {
-  background: var(--border-subtle);
-  border-radius: 2px;
+.animate-glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
 }
+
+/* ─── Custom Scrollbars ─────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--surface-inset); }
+::-webkit-scrollbar-thumb { background: var(--border-active); border-radius: 2px; }
