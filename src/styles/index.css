@@ -17,7 +17,7 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
   min-height: 100dvh;
-  overflow-x: hidden;
+  overflow: hidden; /* Mission sequence: no window scrolling on core flow */
   user-select: none;
   -webkit-user-select: none;
 }
@@ -41,19 +41,28 @@ body::before {
   flex-direction: column;
   align-items: center;
   background-color: var(--bg-deep);
+  overflow: hidden;
 }
 
 .app-viewport {
   width: 100%;
   max-width: var(--max-width);
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   position: relative;
   background-color: var(--bg-deep);
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
-  padding-bottom: calc(72px + env(safe-area-inset-bottom, 16px));
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.85);
+  overflow: hidden;
+}
+
+/* Scrollable container specifically for ARCHIVE view */
+.archive-scrollable {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: calc(40px + env(safe-area-inset-bottom, 16px));
 }
 
 /* Typography Utility Classes */
@@ -85,11 +94,7 @@ body::before {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.cold-card.interactive:hover {
-  border-color: var(--border-active);
-}
-
-/* Rocket Launch / Primary CTA Button */
+/* Tactical CTA Buttons */
 .btn-primary-ember {
   display: flex;
   align-items: center;
@@ -107,7 +112,7 @@ body::before {
   border-radius: var(--radius-md);
   cursor: pointer;
   box-shadow: 0 4px 24px var(--glow-ember-intense), 0 0 40px var(--glow-ember);
-  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, filter 0.15s ease-out;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
   position: relative;
   overflow: hidden;
 }
@@ -116,18 +121,6 @@ body::before {
   transform: scale(0.97);
 }
 
-.btn-primary-ember:hover {
-  box-shadow: 0 6px 28px rgba(255, 92, 26, 0.4), 0 0 50px rgba(255, 92, 26, 0.2);
-  filter: brightness(1.05);
-}
-
-.btn-primary-ember:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-/* Secondary Button */
 .btn-secondary {
   display: flex;
   align-items: center;
@@ -136,10 +129,10 @@ body::before {
   background-color: transparent;
   color: var(--text-primary);
   font-family: var(--font-hero);
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  padding: 14px 20px;
+  padding: 12px 18px;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -155,7 +148,6 @@ body::before {
   background-color: var(--surface-card);
 }
 
-/* Danger Button (Reset) */
 .btn-danger-outline {
   display: flex;
   align-items: center;
@@ -180,7 +172,6 @@ body::before {
   background-color: rgba(239, 68, 68, 0.1);
 }
 
-/* Ghost Link / Weak Move */
 .btn-ghost-weak {
   background: none;
   border: none;
@@ -199,27 +190,98 @@ body::before {
   color: var(--color-danger);
 }
 
-/* Animations */
-@keyframes flameFlicker {
-  0% {
-    transform: scale(1);
-    opacity: 0.95;
-    filter: drop-shadow(0 0 16px rgba(255, 92, 26, 0.35));
+/* =========================================================
+   MISSION-SEQUENCE MOTION ARCHITECTURE
+   ========================================================= */
+
+/* 5:30 - 7:00 AM Screen Wake-Up Shake (4px once) */
+@keyframes wakeUpHit {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+}
+
+.animate-wake-shake {
+  animation: wakeUpHit 220ms ease-out 1;
+}
+
+/* VIGIL -> BRIEFING: Slides up like a briefing sheet */
+@keyframes slideUpBriefing {
+  from {
+    transform: translateY(100%);
+    opacity: 0.8;
   }
-  35% {
-    transform: scale(1.025) translateY(-1px);
+  to {
+    transform: translateY(0);
     opacity: 1;
-    filter: drop-shadow(0 0 24px rgba(255, 92, 26, 0.55));
   }
-  70% {
-    transform: scale(0.99) translateY(0.5px);
-    opacity: 0.92;
-    filter: drop-shadow(0 0 18px rgba(255, 92, 26, 0.38));
+}
+
+.animate-slide-up {
+  animation: slideUpBriefing 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* BRIEFING -> BATTLE: Hard cut (150ms fade) like entering the gym */
+@keyframes hardCutFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-hard-cut {
+  animation: hardCutFadeIn 150ms ease-out forwards;
+}
+
+/* Tap Ripple (100ms ember pulse ripple from tap) */
+@keyframes tapRippleEmber {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.8;
   }
   100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.animate-tap-ripple {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 92, 26, 0.5) 0%, rgba(255, 92, 26, 0) 70%);
+  pointer-events: none;
+  animation: tapRippleEmber 250ms ease-out forwards;
+}
+
+/* Rest timer ring flashing ice -> ember for last 3s */
+@keyframes restWarningFlash {
+  0%, 100% {
+    stroke: var(--color-ice);
+    filter: drop-shadow(0 0 6px var(--glow-ice));
+  }
+  50% {
+    stroke: var(--color-ember);
+    filter: drop-shadow(0 0 14px var(--color-ember));
+  }
+}
+
+.animate-rest-warning {
+  animation: restWarningFlash 0.5s ease-in-out infinite;
+}
+
+/* Flame animation */
+@keyframes flameFlicker {
+  0%, 100% {
     transform: scale(1);
     opacity: 0.95;
     filter: drop-shadow(0 0 16px rgba(255, 92, 26, 0.35));
+  }
+  50% {
+    transform: scale(1.03) translateY(-1px);
+    opacity: 1;
+    filter: drop-shadow(0 0 24px rgba(255, 92, 26, 0.55));
   }
 }
 
@@ -228,38 +290,10 @@ body::before {
   transform-origin: center bottom;
 }
 
-@keyframes pulseBorder {
-  0%, 100% {
-    outline-color: rgba(255, 92, 26, 0.3);
-    box-shadow: 0 0 0 0 rgba(255, 92, 26, 0.3);
-  }
-  50% {
-    outline-color: rgba(255, 92, 26, 0.9);
-    box-shadow: 0 0 10px rgba(255, 92, 26, 0.5);
-  }
-}
-
-.animate-pulse-outline {
-  animation: pulseBorder 1.8s ease-in-out infinite;
-}
-
-@keyframes fadeInFast {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.page-transition {
-  animation: fadeInFast 150ms ease-out forwards;
-}
-
 /* Victory Vignette Flash */
 @keyframes victoryFlash {
   0% {
-    box-shadow: inset 0 0 120px rgba(74, 222, 128, 0.6);
+    box-shadow: inset 0 0 140px rgba(74, 222, 128, 0.7);
   }
   100% {
     box-shadow: inset 0 0 0 rgba(74, 222, 128, 0);
@@ -274,10 +308,9 @@ body::before {
   z-index: 10000;
 }
 
-/* Custom Scrollbars */
+/* Custom Scrollbars for Archive view */
 ::-webkit-scrollbar {
   width: 4px;
-  height: 4px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg-deep);
@@ -285,7 +318,4 @@ body::before {
 ::-webkit-scrollbar-thumb {
   background: var(--border-subtle);
   border-radius: 2px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--border-active);
 }
